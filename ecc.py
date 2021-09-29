@@ -59,24 +59,14 @@ class Point:
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
         
+        if self == other and self.y == 0 * self.x:
+            return self.__class__(None, None, self.a, self.b)
+
         if self == other:
             s = (3 * self.x**2 + self.a) / (2 * self.y)
             x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
-
-        if self == other and self.y == 0 * self.x:
-            return self.__class__(None, None, self.a, self.b)
-
-
-if __name__ == '__main__':
-    a, b = 5, 7
-    x1, y1 = -1, -1
-    x2, y2 = -1, -1
-    s = (3 * x1**2 +a) / (2 * y1)
-    x3 = s**2 - 2 * x1
-    y3 = s * (x1 - x3) - y1
-    print(f'x3:{x3}, y3:{y3}')
 
 
 class FieldElement:

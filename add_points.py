@@ -14,4 +14,7 @@ if  __name__ == '__main__':
     y2 = FieldElement(56, prime)
     p1 = Point(x1, y1, a, b)
     p2 = Point(x2, y2, a, b)
-    print(p1 != p2)
+    print(p1)
+    print(p2)
+    add = p1+p2
+    print(add)
