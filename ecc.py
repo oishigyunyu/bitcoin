@@ -21,6 +21,20 @@ class ECCTest(TestCase):
             with self.assertRaises(ValueError):
                 Point(x, y, a, b)
 
+    def test_add(self):
+        prime = 223
+        a = FieldElement(0, prime)
+        b = FieldElement(7, prime)
+        points = [[170, 142, 60, 139], [47, 71, 17, 56], [143, 98, 76, 66]]
+        for x1, y1, x2, y2 in points:
+            x1 = FieldElement(x1, prime)
+            y1 = FieldElement(y1, prime)
+            x2 = FieldElement(x2, prime)
+            y2 = FieldElement(y2, prime)
+            p1 = Point(x1, y1, a, b)
+            p2 = Point(x2, y2, a, b)
+            p1+p2
+
 class Point:
 
     def __init__(self, x, y, a, b):
