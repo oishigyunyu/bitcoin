@@ -164,7 +164,4 @@ class FieldElement:
         return self.__class__(num, self.prime)
 
 if __name__ == '__main__':
-    prime = 31
-    print(3*pow(24, prime-2, prime) % prime)
-    print(pow(17, prime-4) % prime)
-    print(pow(4, prime- 5, prime) * 11 % prime)
+    print('ecc.py is heere')
