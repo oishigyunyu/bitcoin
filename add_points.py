@@ -11,10 +11,4 @@ if  __name__ == '__main__':
     x = FieldElement(15, prime)
     y = FieldElement(86, prime)
     p = Point(x, y, a, b)
-    one = p
-    zero = FieldElement(0, prime)
-    for i in range(1000):
-        print(p+p)
-        if p == zero:
-            print(i+1)
-            break
+    print(2*p)

@@ -117,7 +117,7 @@ class Point:
             if coef & 1:
                 result += current
             current += current
-            coef >> 1
+            coef >>= 1
         
         return result
 
