@@ -108,8 +108,13 @@ class Point:
             x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
-
-
+    
+    def __rmul__(self, coefficient):
+        product = self.__class__(None, None, self.a, self.b)
+        for _ in range(coefficient):
+            product += self
+            return product
+            
 class FieldElement:
 
     def __init__(self, num, prime):
