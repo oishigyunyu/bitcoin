@@ -110,11 +110,17 @@ class Point:
             return self.__class__(x, y, self.a, self.b)
     
     def __rmul__(self, coefficient):
-        product = self.__class__(None, None, self.a, self.b)
-        for _ in range(coefficient):
-            product += self
-            return product
-            
+        coef = coefficient
+        current = self
+        result = self.__class__(None, None, self.a, self.b)
+        while coef:
+            if coef & 1:
+                result += current
+            current += current
+            coef >> 1
+        
+        return result
+
 class FieldElement:
 
     def __init__(self, num, prime):
@@ -181,6 +187,10 @@ class FieldElement:
         num = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
         # We return an element of the same class
         return self.__class__(num, self.prime)
+
+    def __rmul__(self, coefficient):
+        num = (self.num * coefficient) % self.prime
+        return self.__class__(num=num, prime=self.prime)
 
 if __name__ == '__main__':
     print('ecc.py is heere')
