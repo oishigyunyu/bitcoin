@@ -192,5 +192,11 @@ class FieldElement:
         num = (self.num * coefficient) % self.prime
         return self.__class__(num=num, prime=self.prime)
 
-if __name__ == '__main__':
-    print('ecc.py is heere')
+P = 2**256 - 2**32 - 977
+
+class S256Field(FieldElement):
+    def __init__(self, num, prime=None):
+        super().__init__(num=num, prime=prime)
+    
+    def __repr__(self):
+        return '{:x}'.format(self.num).zfill(64)
