@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from field_element import FieldElement
 
 class Point:
