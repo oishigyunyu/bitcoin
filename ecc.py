@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
-from field_element import FieldElement
-from point import Point
 
 
 class ECCTest(TestCase):
@@ -34,10 +32,10 @@ class ECCTest(TestCase):
             y2 = FieldElement(y2, prime)
             p1 = Point(x1, y1, a, b)
             p2 = Point(x2, y2, a, b)
-            p1+p2
+            p1 + p2
+
 
 class Point:
-
     def __init__(self, x, y, a, b):
         self.a = a
         self.b = b
@@ -122,8 +120,8 @@ class Point:
         
         return result
 
-class FieldElement:
 
+class FieldElement:
     def __init__(self, num, prime):
         if num >= prime or num < 0:
             error = 'Num {} not in field range 0 to {}'.format(
@@ -210,6 +208,16 @@ B = 7
 
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 
+
+class Signature:
+    def __init__(self, r, s):
+        self.r = r
+        self.s = s
+    
+    def __repr__(self):
+        return 'Signature({:x}, {:x})'.format(self.r, self.s)
+
+
 class S256Point(Point):
     def __init__(self, x, y, a=None, b=None):
         a, b = S256Field(A), S256Field(B)
@@ -221,6 +229,14 @@ class S256Point(Point):
     def __rmul__(self, coefficient):
         coef = coefficient % N
         return super().__rmul__(coef)
+
+    def verity(self, z, sig):
+        s_inv = pow(sig.s, N - 2, N)
+        u = z * s_inv % N
+        v = sig.r * s_inv % N
+        total = u * G + v * self
+        return total.x.num == sig.r
+
 
 G = S256Point(
     0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,

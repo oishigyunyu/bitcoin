@@ -2,8 +2,8 @@
 
 from field_element import FieldElement
 
-class Point:
 
+class Point:
     def __init__(self, x, y, a, b):
         self.a = a
         self.b = b
@@ -90,11 +90,12 @@ class Point:
         
         return result
 
+
 if __name__ == '__main__':
     a, b = 5, 7
     x1, y1 = -1, -1
     x2, y2 = -1, -1
-    s = (3 * x1**2 +a) / (2 * y1)
+    s = (3 * x1**2 + a) / (2 * y1)
     x3 = s**2 - 2 * x1
     y3 = s * (x1 - x3) - y1
-    print(f'x3:{x3}, y3:{y3}')
+    #  print(f'x3:{x3}, y3:{y3}')
