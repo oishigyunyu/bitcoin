@@ -10,13 +10,12 @@ def check_hash(p, z, r, s):
 
 
 if __name__ == '__main__':
-    e = int.from_bytes(hash256(b'my secret'), 'big')
-    z = int.from_bytes(hash256(b'my message'), 'big')
-    k = 123456789
+    e = 12345
+    z = int.from_bytes(hash256(b'Programming Bitcoin!'), 'big')
+    k = 1234567890
     r = (k * G).x.num
     k_inv = pow(k, N - 2, N)
     s = (z + r * e) * k_inv % N
-    print(G)
     point = e * G
     print(point)
     print(hex(z))

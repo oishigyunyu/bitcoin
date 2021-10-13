@@ -225,12 +225,18 @@ class S256Point(Point):
             super().__init__(x=S256Field(x), y=S256Field(y), a=a, b=b)
         else:
             super().__init__(x=x, y=y, a=a, b=b)
+    
+    def __repr__(self):
+        if self.x is None:
+            return 'S256Point(infinity)'
+        else:
+            return 'S256Point({}, {})'.format(self.x, self.y)
 
     def __rmul__(self, coefficient):
         coef = coefficient % N
         return super().__rmul__(coef)
 
-    def verity(self, z, sig):
+    def verify(self, z, sig):
         s_inv = pow(sig.s, N - 2, N)
         u = z * s_inv % N
         v = sig.r * s_inv % N
