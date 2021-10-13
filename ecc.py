@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
-
+from random import randint
 
 class ECCTest(TestCase):
     
@@ -256,3 +256,14 @@ class PrivateKey:
     
     def hex(self):
         return '{:x}'.format(self.secret).zfill(64)
+
+    def sign(self, z):
+        k = randint(0, N - 1)
+        r = (k * G).x.num
+        k_inv = pow(k, N - 2, N)
+        s = (z + r * self.secret) * k_inv % N
+        
+        if s > N / 2:
+            s = N - s
+        
+        return Signature(r, s)
