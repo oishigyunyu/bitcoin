@@ -76,3 +76,18 @@ print(a.wif(compressed=False, testnet=True))
 a = PrivateKey(0x54321deadbeef)
 a.point.adress(testnet=False)
 print(a.wif(compressed=True, testnet=False))
+
+
+print('--------------')
+print('ex7')
+
+h = 0x54321deadbeef
+byte = h.to_bytes(32, 'little')
+num = int.from_bytes(byte, 'little')
+print(num)
+
+
+h = 123456
+byte = h.to_bytes(32, 'little')
+num = int.from_bytes(byte, 'little')
+print(num)
