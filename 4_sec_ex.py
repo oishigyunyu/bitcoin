@@ -61,3 +61,18 @@ print(a)
 a = PrivateKey(0x12345deadbeef)
 a = a.point.adress(testnet=False)
 print(a)
+
+print('-------------------')
+print('ex5')
+
+a = PrivateKey(5003)
+a.point.adress(compressed=False, testnet=True)
+print(a.wif(compressed=True, testnet=True))
+
+a = PrivateKey(2021**5)
+a.point.adress(testnet=True)
+print(a.wif(compressed=False, testnet=True))
+
+a = PrivateKey(0x54321deadbeef)
+a.point.adress(testnet=False)
+print(a.wif(compressed=True, testnet=False))
