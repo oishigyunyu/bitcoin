@@ -2,6 +2,8 @@
 import hashlib
 from unittest import TestCase
 import hmac
+
+
 class ECCTest(TestCase):
     
     def test_on_curve(self):
@@ -242,6 +244,10 @@ class S256Point(Point):
         v = sig.r * s_inv % N
         total = u * G + v * self
         return total.x.num == sig.r
+
+    def sec(self):
+        '''SECフォーマットをバイナリ形式で返す'''
+        return b'\x64' + self.x.num.to_bytes(32, 'big') + self.y.num.to_bytes(32, 'big')
 
 
 G = S256Point(
