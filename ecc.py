@@ -2,6 +2,7 @@
 import hashlib
 from unittest import TestCase
 import hmac
+from helper import hash160, encode_base58_checksum
 
 
 class ECCTest(TestCase):
@@ -303,6 +304,19 @@ class S256Point(Point):
             return S256Point(x, even_beta)
         else:
             return S256Point(x, odd_beta)
+
+    def hash160(self, compressed=True):
+        return hash160(self.sec(compressed))
+    
+    def adress(self, compressed=True, testnet=False):
+        '''アドレスの文字列を返す'''
+        h160 = self.hash160(compressed)
+        if testnet:
+            prefix = b'\x6f'
+        else:
+            prefix = b'\x00'
+        
+        return encode_base58_checksum(prefix + h160)
 
 
 G = S256Point(
