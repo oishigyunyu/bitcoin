@@ -222,6 +222,26 @@ class Signature:
     def __repr__(self):
         return 'Signature({:x}, {:x})'.format(self.r, self.s)
 
+    def der(self):
+        rbin = self.r.to_bytes(32, 'big')
+        #  先頭のnullバイトを取り除く
+        rbin = rbin.lstrip(b'\x00')
+        #  rbinの最上位ビットが1の場合、\x00を追加する
+        if rbin[0] & 0x80:
+            rbin = b'\x00' + rbin
+
+        result = bytes([2, len(rbin)]) + rbin
+        sbin = self.s.to_bytes(32, 'big')
+
+        #  先頭のnullバイトを全部取り除く
+        sbin = sbin.lstrip(b'\x00')
+
+        #  s便の最上位ビットが1の場合、\x00を追加する
+        if sbin[0] & 0x80:
+            sbin = b'\00' + sbin
+        result += bytes([2, len(sbin)]) + sbin
+        return bytes([0x30, len(result)]) + result
+
 
 class S256Point(Point):
     def __init__(self, x, y, a=None, b=None):
