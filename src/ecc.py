@@ -61,30 +61,20 @@ class Point:
         a: Union[int, float, None],
         b: Union[int, float, None],
     ) -> None:
-        self.a = a
+        self.a: Union[int, float, None] = a
         self.b = b
         self.x = x
         self.y = y
         if self.x is None and self.y is None:
             return
-        if self.y ** 2 != self.x ** 3 + a * x + b:
+        elif self.y ** 2 != self.x ** 3 + a * x + b:
             raise ValueError("({}, {}) is not on the curve.".format(x, y))
 
     def __eq__(self, other: "Point") -> bool:
-        return (
-            self.x == other.x
-            and self.y == other.y
-            and self.a == other.a
-            and self.b == other.b
-        )
+        return self == other
 
     def __ne__(self, other: "Point") -> bool:
-        return (
-            self.x != other.x
-            and self.y != other.y
-            and self.a != other.a
-            and self.b != other.b
-        )
+        return not (self == other)
 
     def __add__(self, other: "Point") -> Union["Point", None]:
         if self.a != other.a or self.b != other.b:
@@ -96,4 +86,16 @@ class Point:
         if other.x is None:
             return self
         if self.x == other.x and self.y != other.y:
-            return self.__class__(None, None , self.a, self.b)
+            return self.__class__(None, None, self.a, self.b)
+        if self.x != other.x:
+            s: float = (other.y - self.y) / (other.x - self.y)
+            x: float = s ** 2 - self.x - other.x
+            y: float = s * (self.x - x) - self.y
+            return self.__class__(x, y, self.a, self.b)
+        if self == other:
+            s_eq: float = (3 * self.x ** 2 + self.a) / (2 * self.y)
+            x_eq: float = s_eq ** 2 - 2 * self.x
+            y_eq: float = s_eq * (self.x - x) - self.y
+            return self.__class__(x_eq, y_eq, self.a, self.b)
+        if self == other and self.y == other.y:
+            return self.__class__(None, None, self.a, self.b)
