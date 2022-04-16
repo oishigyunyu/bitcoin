@@ -36,7 +36,8 @@ class FieldElement:
         return self.__class__(num, self.prime)
 
     def __pow__(self, exponent):
-        num = pow(self.num, exponent, self.prime)
+        n = exponent % (self.prime - 1)
+        num = pow(self.num, n, self.prime)
         return self.__class__(num, self.prime)
 
     def __truediv__(self, other):
