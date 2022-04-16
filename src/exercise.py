@@ -1,13 +1,21 @@
+from tarfile import FIFOTYPE
+from attr import field
 from ecc import FieldElement
 
 if __name__ == '__main__':
-    prime = 19
-    ks = [1, 3, 7, 13, 18]
-    max_range = 18
-    for k in ks:
-        field = []
-        for i in range(max_range + 1):
-            field_elem = FieldElement(i, prime)
-            field_elem = field_elem * FieldElement(k, prime)
-            field.append(field_elem.num)
-        print('k={}:'.format(k), field)
+    prime = 31
+    a = FieldElement(3, prime)
+    b = FieldElement(24, prime)
+    b_inv = b**(b.prime - 2)
+    result = a * b_inv
+    print(result)
+    a = FieldElement(17, prime)
+    a_inv = a**(a.prime - 2)
+    result = a_inv**3
+    print(result)
+    a = FieldElement(4, prime)
+    a_inv = a**(a.prime - 2)
+    a = a_inv**4
+    b = FieldElement(11, prime)
+    result = a * b
+    print(result)
