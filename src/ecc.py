@@ -31,10 +31,17 @@ class FieldElement:
 
     def __mul__(self, other):
         if self.prime != other.prime:
-            raise TypeError('Cannot add two numbers in differnt Fields')
+            raise TypeError('Cannot multiple two numbers in differnt Fields')
         num = (self.num * other.num) % self.prime
         return self.__class__(num, self.prime)
 
     def __pow__(self, exponent):
         num = pow(self.num, exponent, self.prime)
+        return self.__class__(num, self.prime)
+
+    def __truediv__(self, other):
+        if self.prime != other.prime:
+            raise TypeError('Cannot add divide numbers in differnt Fields')
+        other_inv = pow(other.num, self.prime - 2, self.prime)
+        num = (self.num * other_inv.num) % self.prime
         return self.__class__(num, self.prime)
