@@ -1,15 +1,13 @@
 class FieldElement:
-
     def __init__(self, num, prime):
         if num >= prime or num < 0:
-            error = 'Num {} not in field range 0 to {}'.format(
-                num, prime - 1)
+            error = "Num {} not in field range 0 to {}".format(num, prime - 1)
             raise ValueError(error)
         self.num = num
         self.prime = prime
 
     def __repr__(self):
-        return 'FieldElement_{}({})'.format(self.prime, self.num)
+        return "FieldElement_{}({})".format(self.prime, self.num)
 
     def __eq__(self, other):
         if other is None:
@@ -22,7 +20,7 @@ class FieldElement:
 
     def __add__(self, other):
         if self.prime != other.prime:
-            raise TypeError('Cannot add two numbers in different Fields')
+            raise TypeError("Cannot add two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
         num = (self.num + other.num) % self.prime
@@ -31,7 +29,7 @@ class FieldElement:
 
     def __sub__(self, other):
         if self.prime != other.prime:
-            raise TypeError('Cannot subtract two numbers in different Fields')
+            raise TypeError("Cannot subtract two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
         num = (self.num - other.num) % self.prime
@@ -40,7 +38,7 @@ class FieldElement:
 
     def __mul__(self, other):
         if self.prime != other.prime:
-            raise TypeError('Cannot multiply two numbers in different Fields')
+            raise TypeError("Cannot multiply two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
         num = (self.num * other.num) % self.prime
@@ -54,7 +52,7 @@ class FieldElement:
 
     def __truediv__(self, other):
         if self.prime != other.prime:
-            raise TypeError('Cannot divide two numbers in different Fields')
+            raise TypeError("Cannot divide two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
         # use fermat's little theorem:
@@ -69,9 +67,9 @@ class FieldElement:
         num = (self.num * coefficient) % self.prime
         return self.__class__(num=num, prime=self.prime)
 
-        
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     prime = 31
-    print(3*pow(24, prime-2, prime) % prime)
-    print(pow(17, prime-4) % prime)
-    print(pow(4, prime- 5, prime) * 11 % prime)
+    print(3 * pow(24, prime - 2, prime) % prime)
+    print(pow(17, prime - 4) % prime)
+    print(pow(4, prime - 5, prime) * 11 % prime)

@@ -1,4 +1,4 @@
-from ecc import S256Point, G, N
+from ecc import G, N, S256Point
 from helper import hash256
 
 
@@ -9,9 +9,9 @@ def check_hash(p, z, r, s):
     return (u * G + v * p).x.num == r
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     e = 12345
-    z = int.from_bytes(hash256(b'Programming Bitcoin!'), 'big')
+    z = int.from_bytes(hash256(b"Programming Bitcoin!"), "big")
     k = 1234567890
     r = (k * G).x.num
     k_inv = pow(k, N - 2, N)
