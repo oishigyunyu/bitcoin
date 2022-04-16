@@ -1,16 +1,7 @@
 from ecc import FieldElement
 
-
-
-def make_field(p):
-    field = []
-    for i in range(1, p):
-        num = FieldElement(i, p)
-        num = num**(p-1)
-        field.append(num.num)
-    return field
-
 if __name__ == '__main__':
-    num_list = [7, 11, 17, 31]
-    for prime in num_list:
-        print(make_field((prime)))
+    prime = 97
+    print(FieldElement(95, prime) * FieldElement(45, prime) * FieldElement(31, prime))
+    print(FieldElement(17, prime) * FieldElement(13, prime) * FieldElement(19, prime) * FieldElement(44, prime))
+    print((FieldElement(12, prime)**7) * (FieldElement(77, prime)**49))
