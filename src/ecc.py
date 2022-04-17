@@ -1,6 +1,6 @@
 from __future__ import annotations
-
-from typing import Union
+from typing import Any, Union
+from unittest import TestCase
 
 
 class FieldElement:
@@ -56,12 +56,12 @@ class FieldElement:
 class Point:
     def __init__(
         self,
-        x: Union[int, float, None],
-        y: Union[int, float, None],
-        a: Union[int, float, None],
-        b: Union[int, float, None],
+        x: Any,
+        y: Any,
+        a: Any,
+        b: Any,
     ) -> None:
-        self.a: Union[int, float, None] = a
+        self.a = a
         self.b = b
         self.x = x
         self.y = y
@@ -99,3 +99,22 @@ class Point:
             return self.__class__(x_eq, y_eq, self.a, self.b)
         if self == other and self.y == other.y:
             return self.__class__(None, None, self.a, self.b)
+
+
+class ECCTest(TestCase):
+    def test_on_curve(self):
+        prime = 223
+        a = FieldElement(0, prime)
+        b = FieldElement(7, prime)
+        valid_points = ((192, 105), (17, 56), (1, 193))
+        invaild_points = ((200, 119), (42, 99))
+        for x_raw, y_raw in valid_points:
+            x = FieldElement(x_raw, prime)
+            y = FieldElement(y_raw, prime)
+            Point(x, y, a, b)
+            
+        for x_raw, y_raw in invaild_points:
+            x = FieldElement(x_raw, prime)
+            y = FieldElement(y_raw, prime)
+            with self.assertRaises(ValueError):
+                Point(x, y, a, b)
