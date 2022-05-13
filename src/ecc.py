@@ -1,4 +1,5 @@
 from __future__ import annotations
+from tkinter.messagebox import NO
 from typing import Any, Union
 from unittest import TestCase
 
@@ -108,6 +109,17 @@ class Point:
         
         else:
             raise NotImplementedError
+    
+    def __rmul__(self, coefficient):
+        coef = coefficient
+        current = self
+        result = self.__class__(None, None, self.a, self.b)
+        while coef:
+            if coef & 1:
+                result += current
+            current += current
+            coef >>= 1
+        return result
 
 
 class ECCTest(TestCase):
