@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any, Union
 from unittest import TestCase
 import sys
-
+from random import randint
 from regex import R
 
 sys.setrecursionlimit(10000)
@@ -173,7 +173,22 @@ class Signature:
     def __repr__(self):
         return 'Signature({:x}, {:x})'.format(self.r, self.s)
 
+class PrivateKey:
+    def __init__(self, secret):
+        self.secret = secret
+        self.point = secret * G
 
+    def hex(self):
+        return '{:x}'.format(self.secret).zfill(64)
+
+    def sign(self, z):
+        k = randint(0, N-1)
+        r = (k * G).x.num
+        k_inv = pow(k, N-2, N)
+        s = (z + r * self.secret) * k_inv % N
+        if s > N / 2:
+            s = N - s
+        return Signature(r, s)
 
 class ECCTest(TestCase):
     def test_on_curve(self):
