@@ -387,6 +387,9 @@ class S256Point(Point):
         v = sig.r * s_inv % N  # <3>
         total = u * G + v * self  # <4>
         return total.x.num == sig.r  # <5>
+
+    def sec(self):
+        return b'\x04' + self.x.num.to_bytes(32, 'big') + self.y.num.to_bytes(32, 'big')
     # end::source12[]
 
 
