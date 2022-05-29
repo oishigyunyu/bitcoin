@@ -354,6 +354,9 @@ class S256Field(FieldElement):
 
     def __repr__(self):
         return '{:x}'.format(self.num).zfill(64)
+
+    def sqrt(self):
+        return self**( (P+1) // 4)
 # end::source5[]
 
 
@@ -396,6 +399,30 @@ class S256Point(Point):
                 return b'\x03' + self.x.num.to_bytes(32, 'big')
         else:
             return b'\x04' + self.x.num.to_bytes(32, 'big') + self.y.num.to_bytes(32, 'big')
+    
+    @classmethod
+    def parse(cls, sec_bin):
+        if sec_bin[0] == 4:
+            x = int.from_bytes(sec_bin[1:33], 'big')
+            y = int.from_bytes(sec_bin[33:65], 'big')
+        is_even = sec_bin[0] == 2
+
+        x = S256Field(int.from_bytes(sec_bin[1:], 'big'))
+        # y^2 = x^3 + 7の右辺の計算
+        alpha = x**3 + S256Field(B)
+        # 左辺を解く
+        beta = alpha.sqrt()
+        if beta.num % 2 == 0:
+            even_beta = beta
+            odd_beta = S256Field(P - beta.num)
+        else:
+            even_beta = S256Field(P - beta.num)
+            odd_beta = beta
+        
+        if is_even:
+            return S256Point(x, even_beta)
+        else:
+            return S256Point(x, odd_beta)
     # end::source12[]
 
 
