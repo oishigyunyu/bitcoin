@@ -7,7 +7,7 @@ from unittest import TestCase
 import hashlib
 import hmac
 
-from helper import encode_base58, hash160
+from helper import encode_base58, hash160, encode_base58_checksum
 
 
 class FieldElement:
@@ -439,7 +439,7 @@ class S256Point(Point):
         else:
             prefix = b'\x00'
         
-        return encode_base58(prefix + h160)
+        return encode_base58_checksum(prefix + h160)
         
 
 

@@ -1,3 +1,4 @@
+from base64 import encode
 from unittest import TestSuite, TextTestRunner
 import hashlib
 
@@ -27,6 +28,9 @@ def encode_base58(s):
         result = BASE58_ALPHABET[mod] + result
 
     return prefix + result 
+
+def encode_base58_checksum(b):
+    return encode_base58((b + hash256(b)[:4]))
 
 def hash160(s):
     return hashlib.new('ripemd160', hashlib.sha256(s).digest()).digest()
