@@ -1,9 +1,13 @@
+from base64 import encode
+from cgi import test
 from random import randint
 from sys import byteorder
 from unittest import TestCase
 
 import hashlib
 import hmac
+
+from helper import encode_base58, hash160
 
 
 class FieldElement:
@@ -424,7 +428,19 @@ class S256Point(Point):
             return S256Point(x, even_beta)
         else:
             return S256Point(x, odd_beta)
-    # end::source12[]
+    
+    def hash160(self, compressed=True):
+        return hash160(self.sec(compressed))
+    
+    def address(self, compressed=True, testnet=False):
+        h160 = hash160(compressed)
+        if testnet:
+            prefix = b'\x6f'
+        else:
+            prefix = b'\x00'
+        
+        return encode_base58(prefix + h160)
+        
 
 
 # tag::source10[]

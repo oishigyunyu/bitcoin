@@ -27,3 +27,6 @@ def encode_base58(s):
         result = BASE58_ALPHABET[mod] + result
 
     return prefix + result 
+
+def hash160(s):
+    return hashlib.new('ripemd160', hashlib.sha256(s).digest()).digest()
