@@ -433,7 +433,7 @@ class S256Point(Point):
         return hash160(self.sec(compressed))
     
     def address(self, compressed=True, testnet=False):
-        h160 = hash160(compressed)
+        h160 = self.hash160(compressed)
         if testnet:
             prefix = b'\x6f'
         else:
@@ -577,3 +577,5 @@ class PrivateKeyTest(TestCase):
         z = randint(0, 2**256)
         sig = pk.sign(z)
         self.assertTrue(pk.point.verify(z, sig))
+
+
