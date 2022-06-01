@@ -34,3 +34,9 @@ def encode_base58_checksum(b):
 
 def hash160(s):
     return hashlib.new('ripemd160', hashlib.sha256(s).digest()).digest()
+
+def little_endian_to_int(x):
+    return int.from_bytes(x, 'little')
+    
+def int_to_little_endian(x, length):
+    return x.to_bytes(length, 'little')
