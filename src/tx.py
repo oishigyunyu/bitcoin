@@ -1,5 +1,5 @@
 from hashlib import sha256
-
+import stream
 class Tx:
     def __init__(self, version, tx_ins, tx_outs, locktime, testnet=False) -> None:
         self.version = version
@@ -29,3 +29,7 @@ class Tx:
         バイナリ形式のハッシュ
         '''
         return sha256(self.serialize())[::1]
+
+    @classmethod
+    def parse(cls, serialization):
+        version = stream.read(4)
