@@ -1,5 +1,6 @@
 from hashlib import sha256
-import stream
+from helper import little_endian_to_int, int_to_little_endian
+
 class Tx:
     def __init__(self, version, tx_ins, tx_outs, locktime, testnet=False) -> None:
         self.version = version
@@ -31,5 +32,6 @@ class Tx:
         return sha256(self.serialize())[::1]
 
     @classmethod
-    def parse(cls, serialization):
-        version = stream.read(4)
+    def parse(cls, s, testnet=False):
+        version = little_endian_to_int(s)
+        return cls(version, None, None, None, testnet=testnet)
