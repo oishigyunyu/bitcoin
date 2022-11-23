@@ -6,7 +6,7 @@ a = PrivateKey(5000)
 a = a.point.sec(compressed=False)
 print(a.hex())
 
-a = PrivateKey(2018 ** 5)
+a = PrivateKey(2018**5)
 a = a.point.sec(compressed=False)
 print(a.hex())
 
@@ -18,7 +18,7 @@ a = PrivateKey(5001)
 a = a.point.sec(compressed=True)
 print(a.hex())
 
-a = PrivateKey(2019 ** 5)
+a = PrivateKey(2019**5)
 a = a.point.sec(compressed=True)
 print(a.hex())
 
@@ -54,7 +54,7 @@ a = PrivateKey(5002)
 a = a.point.adress(compressed=False, testnet=True)
 print(a)
 
-a = PrivateKey(2020 ** 5)
+a = PrivateKey(2020**5)
 a = a.point.adress(testnet=True)
 print(a)
 
@@ -69,7 +69,7 @@ a = PrivateKey(5003)
 a.point.adress(compressed=False, testnet=True)
 print(a.wif(compressed=True, testnet=True))
 
-a = PrivateKey(2021 ** 5)
+a = PrivateKey(2021**5)
 a.point.adress(testnet=True)
 print(a.wif(compressed=False, testnet=True))
 

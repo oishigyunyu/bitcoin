@@ -1,5 +1,4 @@
-from ecc import PrivateKey, Signature
-from helper import encode_base58
+from ecc import PrivateKey
 if __name__ == "__main__":
     secret = "secretsecretsecret"
     priv = PrivateKey(secret)

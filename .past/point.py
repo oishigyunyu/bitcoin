@@ -11,7 +11,7 @@ class Point:
         self.y = y
         if self.x is None and self.y is None:
             return
-        if self.y ** 2 != self.x ** 3 + a * x + b:
+        if self.y**2 != self.x**3 + a * x + b:
             raise ValueError("({}, {}) is not on the curve".format(x, y))
 
     # end::source1[]
@@ -62,7 +62,7 @@ class Point:
         # y3=s*(x1-x3)-y1
         if self.x != other.x:
             s = (other.y - self.y) / (other.x - self.x)
-            x = s ** 2 - self.x - other.x
+            x = s**2 - self.x - other.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
 
@@ -79,8 +79,8 @@ class Point:
         # x3=s**2-2*x1
         # y3=s*(x1-x3)-y1
         if self == other:
-            s = (3 * self.x ** 2 + self.a) / (2 * self.y)
-            x = s ** 2 - 2 * self.x
+            s = (3 * self.x**2 + self.a) / (2 * self.y)
+            x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     a, b = 5, 7
     x1, y1 = -1, -1
     x2, y2 = -1, -1
-    s = (3 * x1 ** 2 + a) / (2 * y1)
-    x3 = s ** 2 - 2 * x1
+    s = (3 * x1**2 + a) / (2 * y1)
+    x3 = s**2 - 2 * x1
     y3 = s * (x1 - x3) - y1
     #  print(f'x3:{x3}, y3:{y3}')

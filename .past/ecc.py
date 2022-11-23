@@ -46,7 +46,7 @@ class Point:
         self.y = y
         if self.x is None and self.y is None:
             return
-        if self.y ** 2 != self.x ** 3 + a * x + b:
+        if self.y**2 != self.x**3 + a * x + b:
             raise ValueError("({}, {}) is not on the curve".format(x, y))
 
     # end::source1[]
@@ -97,7 +97,7 @@ class Point:
         # y3=s*(x1-x3)-y1
         if self.x != other.x:
             s = (other.y - self.y) / (other.x - self.x)
-            x = s ** 2 - self.x - other.x
+            x = s**2 - self.x - other.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
 
@@ -114,8 +114,8 @@ class Point:
         # x3=s**2-2*x1
         # y3=s*(x1-x3)-y1
         if self == other:
-            s = (3 * self.x ** 2 + self.a) / (2 * self.y)
-            x = s ** 2 - 2 * self.x
+            s = (3 * self.x**2 + self.a) / (2 * self.y)
+            x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
 
@@ -202,7 +202,7 @@ class FieldElement:
         return self.__class__(num=num, prime=self.prime)
 
 
-P = 2 ** 256 - 2 ** 32 - 977
+P = 2**256 - 2**32 - 977
 
 
 class S256Field(FieldElement):
@@ -300,7 +300,7 @@ class S256Point(Point):
         x = S256Field(int.from_bytes(sec_bin[1:], "big"))
 
         #  式y^2 = x^3 + 7脳編
-        alpha = x ** 3 + S256Field(B)
+        alpha = x**3 + S256Field(B)
         #  左辺を解く
         beta = alpha.sqrt()
 
