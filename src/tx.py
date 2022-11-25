@@ -40,9 +40,17 @@ class Tx:
         version = little_endian_to_int(s.read(4))
         num_inputs = read_variant(s)
         inputs = []
+        num_outpus = read_variant(s)
+        outputs = []
         for _ in range(num_inputs):
             inputs.append(TxIn.parse(s))
-        return cls(version, inputs, None, None, testnet=testnet)
+
+        for _ in range(num_outpus):
+            outputs.append(TxOut.parse(s))
+
+        locktime = little_endian_to_int(s.read(4))
+
+        return cls(version, inputs, outputs, locktime, testnet=testnet)
 
     def serialize(self):
         raise NotImplementedError
@@ -81,4 +89,27 @@ class TxIn:
 
 class Script:
     def __init__(self) -> None:
+        raise 'emptryscript'
+
+    @staticmethod
+    def parse(s):
         raise NotImplementedError
+
+
+class TxOut:
+    def __init__(self, amount, script_pubkey):
+        self.amount = amount
+        self.script_pubkey = script_pubkey
+
+    def __repr__(self):
+        return '{}:{}'.format(self.amount, self.script_pubkey)
+
+    @classmethod
+    def parse(cls, s):
+        """
+        Takes a byte stream and parses the tx_out at the start.
+        Returns a TxOut object.
+        """
+        amount = little_endian_to_int(s.read(8))
+        script_pubkey = Script.parse(s)
+        return cls(amount, script_pubkey)
