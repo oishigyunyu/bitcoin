@@ -89,7 +89,7 @@ class TxIn:
 
 class Script:
     def __init__(self) -> None:
-        raise 'emptryscript'
+        raise "emptryscript"
 
     @staticmethod
     def parse(s):
@@ -102,7 +102,7 @@ class TxOut:
         self.script_pubkey = script_pubkey
 
     def __repr__(self):
-        return '{}:{}'.format(self.amount, self.script_pubkey)
+        return "{}:{}".format(self.amount, self.script_pubkey)
 
     @classmethod
     def parse(cls, s):

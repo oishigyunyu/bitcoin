@@ -1,64 +1,68 @@
+from __future__ import annotations
+
 import hashlib
 import hmac
 from random import randint
+from typing import Union
 from unittest import TestCase
 
 from helper import encode_base58_checksum, hash160
 
 
 class FieldElement:
-    def __init__(self, num, prime):
+    def __init__(self: FieldElement, num: int, prime: int):
         if num >= prime or num < 0:
-            error = "Num {} not in field range 0 to {}".format(num, prime - 1)
+            error: str = "Num {} not in field range 0 to {}".format(num, prime - 1)
             raise ValueError(error)
-        self.num = num
-        self.prime = prime
+        self.num: int = num
+        self.prime: int = prime
 
-    def __repr__(self):
+    def __repr__(self: FieldElement) -> str:
         return "FieldElement_{}({})".format(self.prime, self.num)
 
-    def __eq__(self, other):
-        if other is None:
-            return False
+    def __eq__(self: FieldElement, other: FieldElement) -> bool:  # type: ignore[override]
+        if isinstance(other, FieldElement):
+            if other is None:
+                return False
         return self.num == other.num and self.prime == other.prime
 
-    def __ne__(self, other):
+    def __ne__(self: FieldElement, other: FieldElement) -> bool:  # type: ignore[override]
         # this should be the inverse of the == operator
         return not (self == other)
 
-    def __add__(self, other):
+    def __add__(self: FieldElement, other: FieldElement) -> FieldElement:
         if self.prime != other.prime:
             raise TypeError("Cannot add two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
-        num = (self.num + other.num) % self.prime
+        num: int = (self.num + other.num) % self.prime
         # We return an element of the same class
         return self.__class__(num, self.prime)
 
-    def __sub__(self, other):
+    def __sub__(self: FieldElement, other: FieldElement) -> FieldElement:
         if self.prime != other.prime:
             raise TypeError("Cannot subtract two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
-        num = (self.num - other.num) % self.prime
+        num: int = (self.num - other.num) % self.prime
         # We return an element of the same class
         return self.__class__(num, self.prime)
 
-    def __mul__(self, other):
+    def __mul__(self: FieldElement, other: FieldElement) -> FieldElement:
         if self.prime != other.prime:
             raise TypeError("Cannot multiply two numbers in different Fields")
         # self.num and other.num are the actual values
         # self.prime is what we need to mod against
-        num = (self.num * other.num) % self.prime
+        num: int = (self.num * other.num) % self.prime
         # We return an element of the same class
         return self.__class__(num, self.prime)
 
-    def __pow__(self, exponent):
-        n = exponent % (self.prime - 1)
-        num = pow(self.num, n, self.prime)
+    def __pow__(self: FieldElement, exponent: int) -> FieldElement:
+        n: int = exponent % (self.prime - 1)
+        num: int = pow(self.num, n, self.prime)
         return self.__class__(num, self.prime)
 
-    def __truediv__(self, other):
+    def __truediv__(self: FieldElement, other: FieldElement) -> FieldElement:
         if self.prime != other.prime:
             raise TypeError("Cannot divide two numbers in different Fields")
         # self.num and other.num are the actual values
@@ -67,13 +71,16 @@ class FieldElement:
         # self.num**(p-1) % p == 1
         # this means:
         # 1/n == pow(n, p-2, p)
-        num = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
+        num: int = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
         # We return an element of the same class
         return self.__class__(num, self.prime)
 
-    def __rmul__(self, coefficient):
-        num = (self.num * coefficient) % self.prime
+    def __rmul__(self: FieldElement, coefficient: int) -> FieldElement:
+        num: int = (self.num * coefficient) % self.prime
         return self.__class__(num=num, prime=self.prime)
+
+
+assert FieldElement.__add__.__annotations__ == {"other": "FieldElement"}
 
 
 class FieldElementTest(TestCase):
@@ -131,19 +138,31 @@ class FieldElementTest(TestCase):
 
 # tag::source1[]
 class Point:
-    def __init__(self, x, y, a, b):
-        self.a = a
-        self.b = b
-        self.x = x
-        self.y = y
+    def __init__(
+        self: Point,
+        x: Union[int, None],
+        y: Union[int, None],
+        a: Union[int, None],
+        b: Union[int, None],
+    ) -> None:
+        self.a: Union[int, None] = a
+        self.b: Union[int, None] = b
+        self.x: Union[int, None] = x
+        self.y: Union[int, None] = y
         if self.x is None and self.y is None:
             return
-        if self.y**2 != self.x**3 + a * x + b:
-            raise ValueError("({}, {}) is not on the curve".format(x, y))
+        if (
+            self.y is not None
+            and self.x is not None
+            and a is not None
+            and x is not None
+        ):
+            if self.y**2 != self.x**3 + a * x + b:
+                raise ValueError("({}, {}) is not on the curve".format(x, y))
 
     # end::source1[]
 
-    def __eq__(self, other):
+    def __eq__(self: Point, other: Point) -> bool:  # type: ignore[override]
         return (
             self.x == other.x
             and self.y == other.y
@@ -151,11 +170,11 @@ class Point:
             and self.b == other.b
         )
 
-    def __ne__(self, other):
+    def __ne__(self, other: Point) -> bool:  # type: ignore[override]
         # this should be the inverse of the == operator
         return not (self == other)
 
-    def __repr__(self):
+    def __repr__(self: Point) -> str:
         if self.x is None:
             return "Point(infinity)"
         elif isinstance(self.x, FieldElement):
@@ -223,7 +242,9 @@ class Point:
             coef >>= 1  # <5>
         return result
 
-    # end::source3[]
+
+assert Point.__add__.__annotations__ == {"other": "Point"}
+# end::source3[]
 
 
 class PointTest(TestCase):
