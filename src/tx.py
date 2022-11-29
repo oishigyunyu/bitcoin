@@ -89,7 +89,7 @@ class TxIn:
 
 class Script:
     def __init__(self) -> None:
-        raise "emptryscript"
+        "emptryscript"
 
     @staticmethod
     def parse(s):

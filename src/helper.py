@@ -1,5 +1,6 @@
 import hashlib
 from base64 import encode
+from typing import ByteString, Union
 from unittest import TestSuite, TextTestRunner
 
 BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
@@ -71,7 +72,7 @@ def read_variant(s):
         return i
 
 
-def encode_variant(i):
+def encode_variant(i: int) -> Union[ByteString, ValueError]:
     """
     整数をvariantとしてエンコードする
     """
