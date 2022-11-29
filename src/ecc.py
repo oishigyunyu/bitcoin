@@ -184,7 +184,7 @@ class Point:
         else:
             return "Point({},{})_{}_{}".format(self.x, self.y, self.a, self.b)
 
-    def __add__(self, other):
+    def __add__(self: Point, other: Point) -> Union[Point, None]:
         if self.a != other.a or self.b != other.b:
             raise TypeError(
                 "Points {}, {} are not on the same curve".format(self, other)
@@ -207,9 +207,9 @@ class Point:
         # x3=s**2-x1-x2
         # y3=s*(x1-x3)-y1
         if self.x != other.x:
-            s = (other.y - self.y) / (other.x - self.x)
+            s = (other.y - self.y) / (other.x - self.x)  # type: ignore
             x = s**2 - self.x - other.x
-            y = s * (self.x - x) - self.y
+            y = s * (self.x - x) - self.y  # type: ignore
             return self.__class__(x, y, self.a, self.b)
 
         # Case 4: if we are tangent to the vertical line,
@@ -225,20 +225,22 @@ class Point:
         # x3=s**2-2*x1
         # y3=s*(x1-x3)-y1
         if self == other:
-            s = (3 * self.x**2 + self.a) / (2 * self.y)
+            s = (3 * self.x**2 + self.a) / (2 * self.y)  # type: ignore
             x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
 
+        return None
+
     # tag::source3[]
-    def __rmul__(self, coefficient):
-        coef = coefficient
-        current = self  # <1>
-        result = self.__class__(None, None, self.a, self.b)  # <2>
+    def __rmul__(self: Point, coefficient: int) -> Point:
+        coef: int = coefficient
+        current: Point = self  # <1>
+        result: Point = self.__class__(None, None, self.a, self.b)  # <2>
         while coef:
             if coef & 1:  # <3>
-                result += current
-            current += current  # <4>
+                result += current  # type: ignore
+            current += current  # type: ignore
             coef >>= 1  # <5>
         return result
 
@@ -374,13 +376,13 @@ N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
 
 # tag::source5[]
 class S256Field(FieldElement):
-    def __init__(self, num, prime=None):
+    def __init__(self, num: int, prime: Union[int, None] = None) -> None:
         super().__init__(num=num, prime=P)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{:x}".format(self.num).zfill(64)
 
-    def sqrt(self):
+    def sqrt(self: FieldElement) -> FieldElement:
         return self ** ((P + 1) // 4)
 
 
