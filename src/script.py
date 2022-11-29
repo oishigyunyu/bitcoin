@@ -1,4 +1,4 @@
-from helper import read_variant, little_endian_to_int, int_to_little_endian
+from helper import read_variant, little_endian_to_int, int_to_little_endian, encode_variant
 
 
 class Script:
@@ -43,6 +43,27 @@ class Script:
             if type(cmd) == int:
                 result += int_to_little_endian(cmd, 1)
             else:
-                length = len(cmd):
+                length = len(cmd)
                 if length < 75:
                     result += int_to_little_endian(length, 1)
+                elif length > 75 and length < 0x100:
+                    result += int_to_little_endian(76, 1)
+                    result += int_to_little_endian(length, 1)
+                elif length >= 0x100 and length <= 520:
+                    result += int_to_little_endian(77, 1)
+                    result += int_to_little_endian(length, 2)
+                else:
+                    raise ValueError('too long an cmd')
+                result += cmd
+        return result
+
+    def serialize(self):
+        result = self.raw_serialize()
+        total = len(result)
+        return encode_variant(total) + result
+
+    def __add__(self, other: Script) -> Script:
+        return Script(self.cmds + other.cmds)
+
+
+assert Script.__add__.__annotations__ == {"other": "Script"}
