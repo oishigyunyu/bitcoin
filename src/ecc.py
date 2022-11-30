@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+from io import BytesIO
 from random import randint
-from typing import Union
+from typing import ByteString, Type, Union
 from unittest import TestCase
 
 from helper import encode_base58_checksum, hash160
@@ -414,7 +415,7 @@ class S256Point(Point):
     # end::source8[]
 
     # tag::source12[]
-    def verify(self, z, sig):
+    def verify(self, z: int, sig: Type[Signature]) -> bool:
         s_inv = pow(sig.s, N - 2, N)  # <1>
         u = z * s_inv % N  # <2>
         v = sig.r * s_inv % N  # <3>
@@ -554,6 +555,29 @@ class Signature:
         result += bytes([2, len(sbin)]) + sbin
 
         return bytes([0x30, len(result)]) + result
+
+    @classmethod
+    def parse(cls, signature_bin: bytes) -> "Signature":
+        stream: "BytesIO" = BytesIO(signature_bin)
+        compund: int = stream.read(1)[0]
+        if compund != 0x30:
+            raise SyntaxError("Bad Signature")
+        length: int = stream.read(1)[0]
+        if length + 2 != len(signature_bin):
+            raise SyntaxError("Bad Signature Length")
+        marker_1: int = stream.read(1)[0]
+        if marker_1 != 0x02:
+            raise SyntaxError("Bad Signature")
+        rlength: int = stream.read(1)[0]
+        r = int.from_bytes(stream.read(rlength), "big")
+        marker_2: int = stream.read(1)[0]
+        if marker_2 != 0x02:
+            raise SyntaxError("Bad Signature")
+        slength: int = stream.read(1)[0]
+        s: int = int.from_bytes(stream.read(slength), "big")
+        if len(signature_bin) != 6 + rlength + slength:
+            raise SyntaxError("Signature too long")
+        return cls(r, s)
 
 
 # end::source11[]

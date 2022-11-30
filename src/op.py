@@ -1,5 +1,5 @@
 import hashlib
-from typing import Callable
+from typing import Callable, Type
 from unittest import TestCase
 
 from ecc import S256Point, Signature
@@ -659,7 +659,7 @@ def op_hash256(stack):
 # end::source2[]
 
 
-def op_checksig(stack, z):
+def op_checksig(stack, z: int) -> bool:
     # check that there are at least 2 elements on the stack
     # the top element of the stack is the SEC pubkey
     # the next element of the stack is the DER signature
@@ -667,7 +667,20 @@ def op_checksig(stack, z):
     # parse the serialized pubkey and signature into objects
     # verify the signature using S256Point.verify()
     # push an encoded 1 or 0 depending on whether the signature verified
-    raise NotImplementedError
+    if len(stack) < 2:
+        return False
+    sec_pubkey = stack.pop()
+    der_sig = stack.pop()[:-1]
+    try:
+        point: Type[S256Point] = S256Point.parse(sec_pubkey)
+        sig: Type[Signature] = Signature.parse(der_sig)
+    except (ValueError, SyntaxError):
+        return False
+    if point.verify(z=z, sig=sig):
+        stack.append(encode_num(1))
+    else:
+        stack.append(encode_num(0))
+    return True
 
 
 def op_checksigverify(stack, z):
