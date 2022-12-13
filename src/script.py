@@ -93,7 +93,7 @@ class Script:
                         LOGGER.info("bad op: {}".format(OP_CODE_NAMES[cmd]))
                         return False
                 elif cmd in (172, 173, 174, 175):
-                    if not operation(stack, 2):
+                    if not operation(stack, z):
                         LOGGER.info("bad op: {}".format(OP_CODE_NAMES[cmd]))
                         return False
             else:
