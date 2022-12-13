@@ -105,4 +105,4 @@ class Script:
         return True
 
 
-assert Script.__add__.__annotations__ == {"other": "Script"}
+Script.__add__.__annotations__ == {"other": "Script"}

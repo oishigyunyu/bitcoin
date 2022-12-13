@@ -676,7 +676,7 @@ def op_checksig(stack, z: int) -> bool:
         sig: Type[Signature] = Signature.parse(der_sig)
     except (ValueError, SyntaxError):
         return False
-    if point.verify(z=z, sig=sig):
+    if point.verify(z=z, sig=sig):  # type: ignore
         stack.append(encode_num(1))
     else:
         stack.append(encode_num(0))

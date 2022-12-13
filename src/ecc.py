@@ -81,7 +81,7 @@ class FieldElement:
         return self.__class__(num=num, prime=self.prime)
 
 
-assert FieldElement.__add__.__annotations__ == {"other": "FieldElement"}
+FieldElement.__add__.__annotations__ == {"other": "FieldElement"}
 
 
 class FieldElementTest(TestCase):
@@ -246,7 +246,7 @@ class Point:
         return result
 
 
-assert Point.__add__.__annotations__ == {"other": "Point"}
+Point.__add__.__annotations__ == {"other": "Point"}
 # end::source3[]
 
 
